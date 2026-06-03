@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pivot — We Don't Post. We Position.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --crimson: #8B0000;
+    --crimson-light: #A50000;
+    --black: #111111;
+    --off-white: #F5F2EE;
+    --warm-gray: #E8E3DC;
+    --mid-gray: #9A9490;
+    --text-dark: #1A1714;
+    --serif: 'Playfair Display', Georgia, serif;
+    --sans: 'Inter', sans-serif;
+    --arabic: 'Tajawal', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--off-white);
+    color: var(--text-dark);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  [lang="ar"] body, body.ar {
+    font-family: var(--arabic);
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    background: rgba(245, 242, 238, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(139,0,0,0.08);
+    transition: padding 0.3s ease;
+  }
+
+  nav.scrolled {
+    padding: 12px 28px;
+    background: rgba(245, 242, 238, 0.97);
+  }
+
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+
+  .nav-logo svg {
+    width: 36px;
+    height: 36px;
+  }
+
+  .nav-logo-text {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--black);
+    letter-spacing: 0.02em;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--mid-gray);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--crimson); }
+
+  .lang-toggle {
+    background: none;
+    border: 1.5px solid var(--crimson);
+    color: var(--crimson);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+
+  .lang-toggle:hover {
+    background: var(--crimson);
+    color: white;
+  }
+
+  /* ─── SECTION LABELS ─── */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--crimson);
+    opacity: 0.5;
+  }
+
+  /* ─── HOME SECTION ─── */
+  #home {
+    min-height: 100vh;
+    padding: 110px 28px 60px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 50px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .home-content { position: relative; }
+
+  .hero-tagline {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--mid-gray);
+    margin-bottom: 24px;
+  }
+
+  .hero-headline {
+    font-family: var(--serif);
+    font-size: clamp(38px, 10vw, 56px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--black);
+    margin-bottom: 24px;
+  }
+
+  .hero-headline span { color: var(--crimson); }
+
+  .hero-body {
+    font-size: 15px;
+    color: #5A5653;
+    line-height: 1.75;
+    margin-bottom: 36px;
+    max-width: 400px;
+  }
+
+  .meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .meta-chip {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: var(--warm-gray);
+    color: var(--text-dark);
+    letter-spacing: 0.02em;
+  }
+
+  .meta-chip.accent {
+    background: var(--crimson);
+    color: white;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--crimson);
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 4px;
+    transition: all 0.25s;
+  }
+
+  .hero-cta:hover {
+    background: var(--black);
+    transform: translateY(-2px);
+  }
+
+  .home-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-photo-wrap {
+    position: relative;
+    width: 260px;
+    height: 320px;
+  }
+
+  .hero-blob {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 240px;
+    height: 280px;
+    background: var(--crimson);
+    opacity: 0.08;
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  }
+
+  .hero-photo {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    filter: grayscale(10%);
+  }
+
+  .hero-photo-card {
+    position: absolute;
+    bottom: -16px;
+    left: -20px;
+    z-index: 3;
+    background: white;
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  }
+
+  .hero-photo-card .stat-num {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--crimson);
+    line-height: 1;
+  }
+
+  .hero-photo-card .stat-label {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--mid-gray);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ─── SERVICES STRIP ─── */
+  .services-strip {
+    background: var(--black);
+    padding: 40px 28px;
+    overflow: hidden;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    transition: border-color 0.25s;
+  }
+
+  .service-item:hover { border-color: var(--crimson); }
+
+  .service-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    color: var(--crimson);
+  }
+
+  .service-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: white;
+    line-height: 1.4;
+  }
+
+  .services-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  .services-header .section-label {
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+  }
+
+  .services-header .section-label::after { background: rgba(255,255,255,0.2); }
+
+  .services-header h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    color: white;
+    font-weight: 700;
+  }
+
+  /* ─── RESULTS STRIP ─── */
+  .results-strip {
+    background: var(--crimson);
+    padding: 36px 28px;
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .result-stat {
+    text-align: center;
+  }
+
+  .result-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 900;
+    color: white;
+    line-height: 1;
+  }
+
+  .result-desc {
+    font-size: 12px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.04em;
+    margin-top: 4px;
+  }
+
+  /* ─── PORTFOLIO ─── */
+  #portfolio {
+    padding: 80px 28px 60px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .portfolio-intro {
+    margin-bottom: 44px;
+  }
+
+  .portfolio-intro h2 {
+    font-family: var(--serif);
+    font-size: clamp(30px, 8vw, 42px);
+    font-weight: 900;
+    color: var(--black);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+
+  .portfolio-intro p {
+    font-size: 14px;
+    color: var(--mid-gray);
+    line-height: 1.7;
+  }
+
+  /* ─── CASE CARDS ─── */
+  .case-card {
+    margin-bottom: 48px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .case-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+  }
+
+  .case-visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9/16;
+    background: #1a1a1a;
+    overflow: hidden;
+  }
+
+  .case-visual video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .case-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .unmute-btn {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    z-index: 10;
+  }
+
+  .unmute-btn:hover { background: var(--crimson); }
+
+  .case-body {
+    padding: 22px 20px 24px;
+  }
+
+  .case-client {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--crimson);
+    margin-bottom: 6px;
+  }
+
+  .case-title {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--black);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .case-desc {
+    font-size: 13px;
+    color: #6A6460;
+    line-height: 1.65;
+    margin-bottom: 16px;
+  }
+
+  .case-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .case-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: var(--warm-gray);
+    color: var(--text-dark);
+  }
+
+  .case-results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding-top: 16px;
+    border-top: 1px solid var(--warm-gray);
+  }
+
+  .case-result-item .num {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--crimson);
+    line-height: 1;
+  }
+
+  .case-result-item .label {
+    font-size: 11px;
+    color: var(--mid-gray);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+
+  /* ─── WORK GRID (images) ─── */
+  .work-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 48px;
+  }
+
+  .work-grid-item {
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--warm-gray);
+  }
+
+  .work-grid-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+    display: block;
+  }
+
+  .work-grid-item:hover img { transform: scale(1.04); }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    padding: 80px 28px 100px;
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  .contact-card {
+    background: var(--black);
+    border-radius: 20px;
+    padding: 40px 28px;
+    color: white;
+  }
+
+  .contact-header {
+    margin-bottom: 36px;
+  }
+
+  .contact-header .section-label {
+    color: rgba(255,255,255,0.35);
+  }
+
+  .contact-header .section-label::after { background: rgba(255,255,255,0.15); }
+
+  .contact-header h2 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 900;
+    color: white;
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+
+  .contact-header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 18px;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    text-decoration: none;
+    color: white;
+    transition: all 0.25s;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .contact-link:hover {
+    border-color: var(--crimson);
+    background: rgba(139,0,0,0.15);
+    transform: translateX(4px);
+  }
+
+  html[dir="rtl"] .contact-link:hover {
+    transform: translateX(-4px);
+  }
+
+  .contact-link-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-link-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .contact-link-info { flex: 1; }
+
+  .contact-link-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 2px;
+  }
+
+  .contact-link-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+  }
+
+  .contact-link-arrow {
+    color: rgba(255,255,255,0.2);
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover .contact-link-arrow { color: var(--crimson); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--black);
+    padding: 24px 28px;
+    text-align: center;
+  }
+
+  .footer-tagline {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    font-style: italic;
+  }
+
+  .footer-tagline span { color: var(--crimson); }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ─── RTL SUPPORT ─── */
+  html[dir="rtl"] .section-label::after {
+    order: -1;
+  }
+
+  html[dir="rtl"] .hero-blob {
+    right: auto;
+    left: -20px;
+  }
+
+  html[dir="rtl"] .hero-photo-card {
+    left: auto;
+    right: -20px;
+  }
+
+  html[dir="rtl"] nav {
+    flex-direction: row-reverse;
+  }
+
+  html[dir="rtl"] body {
+    font-family: var(--arabic);
+  }
+
+  html[dir="rtl"] .hero-headline,
+  html[dir="rtl"] .portfolio-intro h2,
+  html[dir="rtl"] .contact-header h2,
+  html[dir="rtl"] .services-header h2 {
+    font-family: var(--arabic);
+    font-weight: 700;
+  }
+
+  /* ─── REEL LINK ─── */
+  .reel-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 16px 20px 20px;
+    padding: 10px 18px;
+    background: var(--off-white);
+    border: 1.5px solid var(--warm-gray);
+    border-radius: 30px;
+    text-decoration: none;
+    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    transition: all 0.22s;
+  }
+  .reel-link:hover {
+    border-color: var(--crimson);
+    color: var(--crimson);
+    background: white;
+  }
+  .reel-link svg { flex-shrink: 0; }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--warm-gray), transparent);
+    margin: 0;
+  }
+
+  /* Mobile menu hidden on small screens */
+  @media (max-width: 480px) {
+    .nav-links { display: none; }
+    .nav-mobile-links {
+      display: flex;
+      gap: 18px;
+    }
+    .nav-mobile-links a {
+      font-size: 12px;
+      color: var(--mid-gray);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  }
+
+  @media (min-width: 481px) {
+    .nav-mobile-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="main-nav">
+  <a href="#home" class="nav-logo">
+    <!-- Pivot Logo SVG -->
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="52" y="28" width="24" height="44" rx="4" fill="#8B0000"/>
+      <rect x="52" y="28" width="24" height="24" rx="4" fill="#8B0000"/>
+      <rect x="40" y="28" width="12" height="44" rx="4" fill="#8B0000"/>
+      <path d="M40 52 L20 52 L28 44 M20 52 L28 60" stroke="#8B0000" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="52" y="32" width="16" height="16" rx="2" fill="#F5F2EE"/>
+    </svg>
+    <span class="nav-logo-text" data-en="Pivot" data-ar="بيفوت">Pivot</span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#home" data-en="Home" data-ar="الرئيسية">Home</a></li>
+    <li><a href="#portfolio" data-en="Work" data-ar="أعمالنا">Work</a></li>
+    <li><a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a></li>
+  </ul>
+
+  <div style="display:flex;align-items:center;gap:14px;">
+    <div class="nav-mobile-links">
+      <a href="#portfolio" data-en="Work" data-ar="أعمالنا">Work</a>
+      <a href="#contact" data-en="Contact" data-ar="تواصل">Contact</a>
+    </div>
+    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">عربي</button>
+  </div>
+</nav>
+
+<!-- ═══ HOME ═══ -->
+<section id="home">
+  <div class="home-content reveal">
+    <p class="hero-tagline" data-en="Marketing Agency — Ramallah, Palestine" data-ar="وكالة تسويق — رام الله، فلسطين">Marketing Agency — Ramallah, Palestine</p>
+    <h1 class="hero-headline">
+      <span data-en="We Don't" data-ar="لا نُنشر">We Don't</span><br>
+      <span data-en="Post." data-ar="نُموضع">Post.</span><br>
+      <span data-en="We Position." data-ar="نُموضع.">We Position.</span>
+    </h1>
+    <p class="hero-body" data-en="Pivot is a results-driven marketing agency. We build brands, tell stories, and deliver campaigns that move the numbers — not just the feed." data-ar="بيفوت وكالة تسويق تعمل على النتائج. نبني علامات تجارية، نروي قصصاً، وننفذ حملات تحرّك الأرقام — لا مجرد المنشورات.">
+      Pivot is a results-driven marketing agency. We build brands, tell stories, and deliver campaigns that move the numbers — not just the feed.
+    </p>
+    <div class="meta-row">
+      <span class="meta-chip accent" data-en="Available Now" data-ar="متاح الآن">Available Now</span>
+      <span class="meta-chip" data-en="Video Production" data-ar="إنتاج الفيديو">Video Production</span>
+      <span class="meta-chip" data-en="Content Creation" data-ar="إنشاء المحتوى">Content Creation</span>
+    </div>
+    <a href="#contact" class="hero-cta">
+      <span data-en="Work With Us" data-ar="تعاون معنا">Work With Us</span>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="home-visual reveal reveal-delay-1">
+    <div class="hero-photo-wrap">
+      <div class="hero-blob"></div>
+      <img src="IMG_1426.PNG" alt="Pivot team" class="hero-photo" onerror="this.src='IMG_1425.PNG'">
+      <div class="hero-photo-card">
+        <div class="stat-num">707%</div>
+        <div class="stat-label" data-en="Views Growth" data-ar="نمو المشاهدات">Views Growth</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SERVICES ═══ -->
+<div class="services-strip">
+  <div class="services-header reveal">
+    <div class="section-label" data-en="02 What We Do" data-ar="02 ما نقدمه">02 What We Do</div>
+    <h2 data-en="Our Services" data-ar="خدماتنا">Our Services</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-item reveal">
+      <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="12" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M13 11.5l7 4.5-7 4.5V11.5z" fill="currentColor"/>
+      </svg>
+      <span class="service-name" data-en="Video Production & Photography" data-ar="إنتاج الفيديو والتصوير">Video Production & Photography</span>
+    </div>
+    <div class="service-item reveal reveal-delay-1">
+      <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+        <rect x="4" y="6" width="24" height="18" rx="3" stroke="currentColor" stroke-width="1.8"/>
+        <path d="M10 12h12M10 16h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span class="service-name" data-en="Content Creation" data-ar="إنشاء المحتوى">Content Creation</span>
+    </div>
+    <div class="service-item reveal reveal-delay-2">
+      <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+        <path d="M6 24l6-8 4 5 4-6 6 9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="10" r="3" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span class="service-name" data-en="Marketing Campaigns" data-ar="الحملات التسويقية">Marketing Campaigns</span>
+    </div>
+    <div class="service-item reveal reveal-delay-3">
+      <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+        <path d="M16 6v4M16 22v4M6 16h4M22 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="16" cy="16" r="6" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span class="service-name" data-en="Marketing Strategy" data-ar="الاستراتيجيات التسويقية">Marketing Strategy</span>
+    </div>
+    <div class="service-item reveal" style="grid-column: span 2;">
+      <svg class="service-icon" viewBox="0 0 32 32" fill="none">
+        <path d="M8 8h16v4H8zM10 16h12M10 20h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        <rect x="4" y="6" width="24" height="20" rx="3" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span class="service-name" data-en="Visual Identity & Branding" data-ar="بناء الهوية البصرية">Visual Identity & Branding</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ RESULTS NUMBERS ═══ -->
+<div class="results-strip">
+  <div class="results-grid">
+    <div class="result-stat reveal">
+      <div class="result-num">707%</div>
+      <div class="result-desc" data-en="Instagram Views Growth" data-ar="نمو المشاهدات على إنستغرام">Instagram Views Growth</div>
+    </div>
+    <div class="result-stat reveal reveal-delay-1">
+      <div class="result-num">3.6M</div>
+      <div class="result-desc" data-en="TikTok Views" data-ar="مشاهدات تيك توك">TikTok Views</div>
+    </div>
+    <div class="result-stat reveal reveal-delay-2">
+      <div class="result-num">+238%</div>
+      <div class="result-desc" data-en="Accounts Reached" data-ar="حسابات وصل إليها">Accounts Reached</div>
+    </div>
+    <div class="result-stat reveal reveal-delay-3">
+      <div class="result-num">+231%</div>
+      <div class="result-desc" data-en="Profile Activity" data-ar="نشاط الملف الشخصي">Profile Activity</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ═══ PORTFOLIO ═══ -->
+<section id="portfolio">
+  <div class="portfolio-intro reveal">
+    <div class="section-label" data-en="03 Our Work" data-ar="03 أعمالنا">03 Our Work</div>
+    <h2 data-en="Selected Projects" data-ar="مشاريع مختارة">Selected Projects</h2>
+    <p data-en="From brand identity to viral campaigns — here's what we've built for our clients." data-ar="من الهوية البصرية إلى الحملات الفيروسية — إليك ما بنيناه لعملائنا.">From brand identity to viral campaigns — here's what we've built for our clients.</p>
+  </div>
+
+  <!-- Case 1: Mentors Academy -->
+  <div class="case-card reveal">
+    <div class="case-visual">
+      <img src="IMG_1422.PNG" alt="Mentors Academy">
+      <button class="unmute-btn" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+          <path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <div class="case-body">
+      <div class="case-client" data-en="Mentors Academy" data-ar="أكاديمية مينتورز">Mentors Academy</div>
+      <div class="case-title" data-en="Full Marketing Strategy & Brand Film" data-ar="استراتيجية تسويقية كاملة وفيلم العلامة التجارية">Full Marketing Strategy & Brand Film</div>
+      <p class="case-desc" data-en="Developed a complete sales funnel strategy, content plan, and produced a cinematic brand film with a narrative script designed to convert viewers into enrolled students." data-ar="طورنا استراتيجية قمع مبيعات كاملة، خطة محتوى، وأنتجنا فيلماً سينمائياً للعلامة التجارية بسكريبت قصصي مصمم لتحويل المشاهدين إلى طلاب مسجلين.">
+        Developed a complete sales funnel strategy, content plan, and produced a cinematic brand film with a narrative script designed to convert viewers into enrolled students.
+      </p>
+      <div class="case-tags">
+        <span class="case-tag" data-en="Brand Film" data-ar="فيلم تجاري">Brand Film</span>
+        <span class="case-tag" data-en="Content Strategy" data-ar="استراتيجية المحتوى">Content Strategy</span>
+        <span class="case-tag" data-en="Sales Funnel" data-ar="قمع المبيعات">Sales Funnel</span>
+        <span class="case-tag" data-en="Social Media" data-ar="وسائل التواصل">Social Media</span>
+      </div>
+      <div class="case-results">
+        <div class="case-result-item">
+          <div class="num">+1500</div>
+          <div class="label" data-en="Students Helped" data-ar="طالب استفاد">Students Helped</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">7 Sections</div>
+          <div class="label" data-en="Brand Film Script" data-ar="سكريبت الفيلم">Brand Film Script</div>
+        </div>
+      </div>
+    </div>
+    <a href="https://www.instagram.com/reel/DXXNqmzALuR/?igsh=Znl2eHlneXdnemk3" target="_blank" rel="noopener" class="reel-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/><path d="M9 8.5l7 3.5-7 3.5V8.5z" fill="currentColor"/></svg>
+      <span data-en="Watch on Instagram" data-ar="شاهد على إنستغرام">Watch on Instagram</span>
+    </a>
+  </div>
+
+  <!-- Case 2: Damra Furniture -->
+  <div class="case-card reveal">
+    <div class="case-visual">
+      <img src="IMG_1427.PNG" alt="Damra Campaign">
+    </div>
+    <div class="case-body">
+      <div class="case-client" data-en="Damra — Furniture & Carpets" data-ar="ضمرة للمفروشات والبرادي">Damra — Furniture & Carpets</div>
+      <div class="case-title" data-en="'Feel Like It's Yours' Campaign" data-ar="حملة 'تجربة بتشبهك'">"Feel Like It's Yours" Campaign</div>
+      <p class="case-desc" data-en="A 30-day content campaign to reposition the store as an experience, not just a place to buy. We built emotional connection, increased physical visits, and created a content ecosystem across Reels, Stories, and in-store videos." data-ar="حملة محتوى لمدة 30 يوماً لإعادة تموضع المتجر كتجربة لا مجرد مكان للشراء. بنينا ارتباطاً عاطفياً، زدنا الزيارات الفعلية، وأنشأنا نظام محتوى عبر ريلز وستوريز وفيديوهات داخل المحل.">
+        A 30-day content campaign to reposition the store as an experience, not just a place to buy. We built emotional connection, increased physical visits, and created a content ecosystem across Reels, Stories, and in-store videos.
+      </p>
+      <div class="case-tags">
+        <span class="case-tag" data-en="30-Day Campaign" data-ar="حملة 30 يوم">30-Day Campaign</span>
+        <span class="case-tag" data-en="Reels / TikTok" data-ar="ريلز / تيك توك">Reels / TikTok</span>
+        <span class="case-tag" data-en="Brand Image" data-ar="صورة العلامة">Brand Image</span>
+        <span class="case-tag" data-en="Video Production" data-ar="إنتاج الفيديو">Video Production</span>
+      </div>
+      <div class="case-results">
+        <div class="case-result-item">
+          <div class="num">+707%</div>
+          <div class="label" data-en="Views Growth" data-ar="نمو المشاهدات">Views Growth</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">197K</div>
+          <div class="label" data-en="Total Impressions" data-ar="إجمالي الوصول">Total Impressions</div>
+        </div>
+      </div>
+    </div>
+    <a href="https://www.instagram.com/reel/DXcXPWTAMut/?igsh=MXdleG42aGpiODFtbQ==" target="_blank" rel="noopener" class="reel-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/><path d="M9 8.5l7 3.5-7 3.5V8.5z" fill="currentColor"/></svg>
+      <span data-en="Watch on Instagram" data-ar="شاهد على إنستغرام">Watch on Instagram</span>
+    </a>
+  </div>
+
+  <!-- Work Grid -->
+  <div class="section-label reveal" data-en="More Work" data-ar="المزيد من الأعمال">More Work</div>
+  <div class="work-grid reveal">
+    <div class="work-grid-item">
+      <img src="IMG_1429.PNG" alt="Campaign work">
+    </div>
+    <div class="work-grid-item">
+      <img src="IMG_1430.PNG" alt="Shishapresso">
+    </div>
+    <div class="work-grid-item">
+      <img src="IMG_1379.PNG" alt="Leen Cosmetics">
+    </div>
+    <div class="work-grid-item">
+      <img src="IMG_1423.PNG" alt="Content creation">
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;" class="reveal">
+    <a href="https://www.instagram.com/reel/DXkF6kWgAnE/?igsh=cWUxM2p1b3gxeGht" target="_blank" rel="noopener" class="reel-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/><path d="M9 8.5l7 3.5-7 3.5V8.5z" fill="currentColor"/></svg>
+      <span data-en="Reel 3" data-ar="ريل 3">Reel 3</span>
+    </a>
+    <a href="https://www.instagram.com/reel/DXr0wfrgO-F/?igsh=cGQwZ2dnejYzeDF6" target="_blank" rel="noopener" class="reel-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/><path d="M9 8.5l7 3.5-7 3.5V8.5z" fill="currentColor"/></svg>
+      <span data-en="Reel 4" data-ar="ريل 4">Reel 4</span>
+    </a>
+  </div>
+
+  <!-- Case 3: TikTok Results -->
+  <div class="case-card reveal">
+    <div class="case-visual" style="aspect-ratio: 16/9; background: #0a0a0a;">
+      <img src="IMG_1424.PNG" alt="TikTok Results" style="object-fit: contain; padding: 20px;">
+    </div>
+    <div class="case-body">
+      <div class="case-client" data-en="Social Media Management" data-ar="إدارة السوشيال ميديا">Social Media Management</div>
+      <div class="case-title" data-en="Multi-Platform Growth Results" data-ar="نتائج النمو على المنصات المتعددة">Multi-Platform Growth Results</div>
+      <p class="case-desc" data-en="Managed Instagram and TikTok accounts with a content strategy focused on Reels and short-form video. Results speak for themselves." data-ar="أدرنا حسابات إنستغرام وتيك توك باستراتيجية محتوى مرتكزة على الريلز والفيديو القصير. النتائج تتكلم عن نفسها.">
+        Managed Instagram and TikTok accounts with a content strategy focused on Reels and short-form video. Results speak for themselves.
+      </p>
+      <div class="case-results">
+        <div class="case-result-item">
+          <div class="num">3.6M</div>
+          <div class="label" data-en="TikTok Views" data-ar="مشاهدات تيك توك">TikTok Views</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">51K</div>
+          <div class="label" data-en="TikTok Likes" data-ar="لايكات تيك توك">TikTok Likes</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">99.3%</div>
+          <div class="label" data-en="Explorer Reach" data-ar="الظهور على اكسبلور">Explorer Reach</div>
+        </div>
+        <div class="case-result-item">
+          <div class="num">4,902</div>
+          <div class="label" data-en="IG Interactions" data-ar="تفاعلات إنستغرام">IG Interactions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="contact-card reveal">
+    <div class="contact-header">
+      <div class="section-label" data-en="04 Get In Touch" data-ar="04 تواصل معنا">04 Get In Touch</div>
+      <h2 data-en="Ready to Position Your Brand?" data-ar="مستعد لتموضع علامتك؟">Ready to Position Your Brand?</h2>
+      <p data-en="We're selective about who we work with — because results matter. Reach out and let's talk strategy." data-ar="نحن انتقائيون في اختيار من نعمل معه — لأن النتائج تهم. تواصل معنا ولنتحدث عن الاستراتيجية.">We're selective about who we work with — because results matter. Reach out and let's talk strategy.</p>
+    </div>
+    <div class="contact-links">
+      <a href="https://wa.me/970569283979" class="contact-link" target="_blank" rel="noopener">
+        <div class="contact-link-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" fill="#25D366"/>
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.978-1.388A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" stroke="#25D366" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="contact-link-info">
+          <div class="contact-link-label" data-en="WhatsApp" data-ar="واتساب">WhatsApp</div>
+          <div class="contact-link-value">+970 569 283 979</div>
+        </div>
+        <div class="contact-link-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </a>
+
+
+      <a href="https://www.instagram.com/pivot.ps" class="contact-link" target="_blank" rel="noopener">
+        <div class="contact-link-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#ig-grad)" stroke-width="1.8"/>
+            <circle cx="12" cy="12" r="4.5" stroke="url(#ig-grad)" stroke-width="1.8"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="#E1306C"/>
+            <defs>
+              <linearGradient id="ig-grad" x1="2" y1="22" x2="22" y2="2">
+                <stop offset="0%" stop-color="#FFDC80"/>
+                <stop offset="50%" stop-color="#E1306C"/>
+                <stop offset="100%" stop-color="#833AB4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="contact-link-info">
+          <div class="contact-link-label" data-en="Instagram" data-ar="إنستغرام">Instagram</div>
+          <div class="contact-link-value">@pivot.ps</div>
+        </div>
+        <div class="contact-link-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </a>
+
+      <a href="tel:+970569283979" class="contact-link">
+        <div class="contact-link-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="contact-link-info">
+          <div class="contact-link-label" data-en="Phone" data-ar="هاتف">Phone</div>
+          <div class="contact-link-value">+970 569 283 979</div>
+        </div>
+        <div class="contact-link-arrow">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <p class="footer-tagline">
+    <span>Pivot</span> — <span data-en="We Don't Post. We Position." data-ar="لا نُنشر. نُموضع." class="footer-tagline">We Don't Post. We Position.</span>
+  </p>
+</footer>
+
+<script>
+  // ─── LANGUAGE TOGGLE ───
+  let isArabic = localStorage.getItem('pivot-lang') === 'ar';
+
+  function applyLang() {
+    const html = document.documentElement;
+    const btn = document.getElementById('langBtn');
+    
+    if (isArabic) {
+      html.setAttribute('lang', 'ar');
+      html.setAttribute('dir', 'rtl');
+      btn.textContent = 'English';
+      document.querySelectorAll('[data-ar]').forEach(el => {
+        if (!el.dataset.originalContent) el.dataset.originalContent = el.textContent;
+        el.textContent = el.dataset.ar;
+      });
+    } else {
+      html.setAttribute('lang', 'en');
+      html.setAttribute('dir', 'ltr');
+      btn.textContent = 'عربي';
+      document.querySelectorAll('[data-en]').forEach(el => {
+        el.textContent = el.dataset.en;
+      });
+    }
+  }
+
+  function toggleLang() {
+    isArabic = !isArabic;
+    localStorage.setItem('pivot-lang', isArabic ? 'ar' : 'en');
+    applyLang();
+  }
+
+  applyLang();
+
+  // ─── NAV SCROLL ───
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // ─── SCROLL REVEAL ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ─── UNMUTE BUTTONS ───
+  document.querySelectorAll('.case-visual').forEach(wrap => {
+    const video = wrap.querySelector('video');
+    const btn = wrap.querySelector('.unmute-btn');
+    if (!video || !btn) return;
+
+    btn.style.display = 'flex';
+    let muted = true;
+
+    btn.addEventListener('click', () => {
+      muted = !muted;
+      video.muted = muted;
+      btn.innerHTML = muted
+        ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/><path d="M23 9l-6 6M17 9l6 6" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`
+        : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M11 5L6 9H2v6h4l5 4V5z" fill="white"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07" stroke="white" stroke-width="2" stroke-linecap="round"/></svg>`;
+    });
+  });
+</script>
+</body>
+</html>
